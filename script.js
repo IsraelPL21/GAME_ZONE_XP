@@ -530,3 +530,61 @@ if (gamesCarousel) {
     schedule();
   }
 }
+
+// Official hours use Mexico City time regardless of the visitor's timezone.
+(() => {
+  const matrix = document.querySelector('#horarios');
+  if (!matrix) return;
+  const days = [...matrix.querySelectorAll('[data-weekday]')];
+  const status = matrix.querySelector('.matrix-status');
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Mexico_City', weekday: 'short',
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  });
+  let timer;
+  let userSelected = false;
+  function selectDay(selected, animate = false) {
+    days.forEach(day => {
+      const active = day === selected;
+      day.classList.toggle('is-selected', active);
+      day.setAttribute('aria-pressed', String(active));
+      day.classList.remove('is-locked');
+    });
+    if (animate) {
+      // Restart the lock pulse even when the same day is activated again.
+      void selected.offsetWidth;
+      selected.classList.add('is-locked');
+    }
+  }
+  matrix.querySelector('.days7').addEventListener('click', event => {
+    const day = event.target.closest('.day');
+    if (!days.includes(day)) return;
+    userSelected = true;
+    selectDay(day, true);
+  });
+  days.forEach(day => day.addEventListener('animationend', event => {
+    if (event.target === day) day.classList.remove('is-locked');
+  }));
+  function updateHours() {
+    clearTimeout(timer);
+    const now = new Date();
+    const parts = Object.fromEntries(formatter.formatToParts(now).map(p => [p.type, p.value]));
+    const weekday = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(parts.weekday);
+    const minutes = Number(parts.hour) * 60 + Number(parts.minute);
+    days.forEach(day => {
+      if (Number(day.dataset.weekday) === weekday) day.setAttribute('aria-current', 'date');
+      else day.removeAttribute('aria-current');
+    });
+    const today = days.find(day => Number(day.dataset.weekday) === weekday);
+    if (!userSelected) selectDay(today);
+    const open = minutes >= Number(today.dataset.open) && minutes < Number(today.dataset.close);
+    const text = open ? 'ABIERTO AHORA' : 'CERRADO AHORA';
+    if (status.textContent !== text) status.textContent = text;
+    matrix.dataset.state = open ? 'open' : 'closed';
+    timer = setTimeout(updateHours, 60000 - (now.getTime() % 60000));
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updateHours(); });
+  window.addEventListener('focus', updateHours);
+  window.addEventListener('pageshow', updateHours);
+  updateHours();
+})();
