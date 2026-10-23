@@ -1,0 +1,11 @@
+{
+  "tool": "image_gen built-in",
+  "prompt": "Edit the reference product illustration triptych into a transparent-background website asset. Remove ONLY the entire dark background, floor, ground and shadows. Keep exactly the same three products and their details: white Xbox Series S and controller, dark television with stand, foosball table. Real alpha transparency, no checkerboard, no backdrop. Arrange the three groups evenly across exactly three equal columns, each fully isolated in its own third, no overlap, no text or lines. Enlarge subjects so each group fills 85% of its column width. Preserve natural proportions. Maintain all thin rods, table legs, controller and television edges. All three groups centered vertically. This is a website illustration asset, not a photo of a business.",
+  "source": "C:/Users/pokem/.codex/generated_images/01a15720-c8ff-7a71-86a0-c26e6749cca2/exec-a4adaf07-33a6-4f05-b60b-451d4fc8f3b1.png",
+  "processing": "Separated groups, trimmed transparent padding, WebP quality88 with native alpha preserved.",
+  "files": [
+    "console.webp",
+    "screen.webp",
+    "foosball.webp"
+  ]
+}

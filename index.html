@@ -1,0 +1,440 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101214" />
+    <meta
+      name="description"
+      content="Xbox Series S, pantallas de 42 pulgadas y una de 75 pulgadas, y dos futbolitos en Tierra y Libertad, San Miguel Soyaltepec, Oaxaca."
+    />
+    <title>Game Zone XP — Tu próxima partida empieza aquí</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="pin" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12 1a8 8 0 0 0-8 8c0 6 8 14 8 14s8-8 8-14a8 8 0 0 0-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
+          />
+        </symbol>
+        <symbol id="photo" viewBox="0 0 64 64">
+          <rect
+            x="5"
+            y="5"
+            width="54"
+            height="54"
+            rx="4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <circle cx="21" cy="21" r="6" fill="currentColor" />
+          <path d="m10 51 14-16 9 9 10-17 12 24Z" fill="currentColor" />
+        </symbol>
+        <symbol id="screen" viewBox="0 0 64 48">
+          <path
+            d="M3 3h58v36H3zM23 45h18M32 39v6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="gamepad" viewBox="0 0 64 48">
+          <path
+            d="M18 7h28c9 0 17 29 13 33-5 6-14-8-18-9H23C19 32 10 46 5 40 1 36 9 7 18 7Z"
+            fill="currentColor"
+          />
+          <path d="M17 15v13m-6-6h12" stroke="#101214" stroke-width="4" />
+          <circle cx="44" cy="18" r="3" fill="#101214" />
+          <circle cx="50" cy="25" r="3" fill="#101214" />
+        </symbol>
+        <symbol id="table" viewBox="0 0 64 48">
+          <path
+            d="M5 10h54v22H5zM11 32v13m42-13v13M1 7h62M1 18h62M1 26h62"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <path
+            d="M16 14v10m16-10v10m16-10v10"
+            stroke="currentColor"
+            stroke-width="5"
+          />
+        </symbol>
+        <symbol id="info" viewBox="0 0 24 24">
+          <circle
+            cx="12"
+            cy="12"
+            r="9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path d="M12 10v7m0-11v2" stroke="currentColor" stroke-width="2" />
+        </symbol>
+      </defs>
+    </svg>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="header-inner wrap">
+        <a class="brand" href="#inicio" aria-label="Game Zone XP, inicio"
+          >GAME ZONE <span>XP</span></a
+        >
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="navigation"
+          hidden
+        >
+          <span class="menu-lines" aria-hidden="true"></span>Menú
+        </button>
+        <nav id="navigation" aria-label="Navegación principal">
+          <a class="nav-link" href="#experiencia">Experiencia</a
+          ><a class="nav-link" href="#galeria">GAMES</a
+          ><a class="nav-link" href="#ubicacion">Ubicación</a
+          ><a class="nav-link" href="encuestas.html">Encuestas</a>
+        </nav>
+        <a
+          class="button button-outline header-location target-lock target-lock-secondary"
+          href="https://www.google.com/maps?q=18.2477989%2C-96.3961956&amp;t=m&amp;z=18"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><svg aria-hidden="true"><use href="#pin" /></svg>Ver ubicación<span
+            class="visually-hidden"
+          >
+            aproximada en Google Maps (abre en una pestaña nueva)</span
+          ></a
+        >
+      </div>
+    </header>
+    <main id="contenido">
+      <section id="inicio" aria-labelledby="hero-title">
+        <div class="hero">
+          <div class="hero-inner wrap">
+            <div class="hero-copy">
+              <p class="locality">San Miguel Soyaltepec, Oaxaca</p>
+              <h1 id="hero-title" class="cyber-title">
+                <span>Tu próxima<br />partida<br />empieza aquí.</span>
+              </h1>
+              <div class="xp-controller-hud xp-paused" id="xboxHud" tabindex="0" role="button" aria-label="Activar animación del control Xbox blanco">
+                <div class="xp-grid" aria-hidden="true"></div>
+                <div class="xp-orbit" aria-hidden="true"></div>
+                <div class="xp-signal" aria-hidden="true"></div>
+                <span class="xp-trace one" aria-hidden="true"></span><span class="xp-trace two" aria-hidden="true"></span>
+                <div class="xp-model-float" aria-hidden="true">
+                  <div class="xp-model-tilt">
+                    <img class="xp-controller-img" src="img/optimized/Game_Zone_XP_Control_Xbox_Blanco.png" width="900" height="648" alt="" draggable="false" decoding="async" />
+                    <span class="xp-logo-pulse"></span>
+                  </div>
+                </div>
+                <span class="xp-scan" aria-hidden="true"></span>
+                <span class="xp-scan-line" aria-hidden="true"></span>
+                <i class="xp-corner a" aria-hidden="true"></i><i class="xp-corner b" aria-hidden="true"></i><i class="xp-corner c" aria-hidden="true"></i><i class="xp-corner d" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="local-carousel" role="region" aria-roledescription="carrusel" aria-label="Fotografías del local">
+              <div class="photo-slot hero-photo local-frame">
+              <div class="local-slides" id="local-slides" aria-live="polite" aria-atomic="true">
+                <img class="local-slide is-active" src="img/optimized/xbox1.jpg" srcset="img/optimized/xbox1-800.jpg 800w, img/optimized/xbox1.jpg 1600w" sizes="(min-width: 769px) 600px, (min-width: 700px) 50vw, calc(100vw - 40px)" width="1600" height="1200" alt="Fotografía 1 de 7: pantalla y consola Xbox de Game Zone XP" decoding="async" fetchpriority="high" />
+                <img class="local-slide" data-src="img/optimized/xbox2.jpg" data-srcset="img/optimized/xbox2-800.jpg 800w, img/optimized/xbox2.jpg 1600w" sizes="(min-width: 769px) 600px, (min-width: 700px) 50vw, calc(100vw - 40px)" width="1600" height="1200" alt="Fotografía 2 de 7: estación Xbox con pantalla y control" decoding="async" loading="lazy" aria-hidden="true" />
+                <img class="local-slide" data-src="img/optimized/xbox3.jpg" data-srcset="img/optimized/xbox3-800.jpg 800w, img/optimized/xbox3.jpg 1600w" sizes="(min-width: 769px) 600px, (min-width: 700px) 50vw, calc(100vw - 40px)" width="1600" height="1200" alt="Fotografía 3 de 7: otra estación de juego del local" decoding="async" loading="lazy" aria-hidden="true" />
+                <img class="local-slide" data-src="img/optimized/xbox4.jpg" data-srcset="img/optimized/xbox4-800.jpg 800w, img/optimized/xbox4.jpg 1600w" sizes="(min-width: 769px) 600px, (min-width: 700px) 50vw, calc(100vw - 40px)" width="1600" height="1200" alt="Fotografía 4 de 7: vista de dos estaciones Xbox en Game Zone XP" decoding="async" loading="lazy" aria-hidden="true" />
+                <img class="local-slide" data-src="img/Futbolitos.jpeg" width="960" height="1280" alt="Fotografía 5 de 7: futbolitos de Game Zone XP" decoding="async" loading="lazy" aria-hidden="true" />
+                <img class="local-slide" data-src="img/Futbolitos2.jpeg" width="1250" height="1280" alt="Fotografía 6 de 7: segunda vista de los futbolitos de Game Zone XP" decoding="async" loading="lazy" aria-hidden="true" />
+                <img class="local-slide" data-src="img/optimized/Futbolitos3.jpg" width="1448" height="1086" alt="Fotografía 7 de 7: tercera vista de los futbolitos de Game Zone XP" decoding="async" loading="lazy" aria-hidden="true" />
+              </div>
+              </div>
+              <div class="local-controls" role="group" aria-label="Elegir fotografía" hidden>
+                <button type="button" class="carousel-control local-prev target-lock target-lock-compact" aria-controls="local-slides" aria-label="Fotografía anterior">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13" /></svg>
+                </button>
+                <span class="local-counter" aria-live="polite" aria-atomic="true">1 de 7</span>
+                <button type="button" class="carousel-control local-next target-lock target-lock-compact" aria-controls="local-slides" aria-label="Fotografía siguiente">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 5 7 7-7 7M17 12H4" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="offer-strip wrap" aria-label="Lo que ofrecemos">
+          <div>
+            <svg aria-hidden="true"><use href="#gamepad" /></svg
+            ><span>Xbox Series S</span>
+          </div>
+          <div>
+            <svg aria-hidden="true"><use href="#screen" /></svg
+            ><span>Pantallas de 42 y 75 pulgadas</span>
+          </div>
+          <div>
+            <svg aria-hidden="true"><use href="#table" /></svg
+            ><span>Dos futbolitos</span>
+          </div>
+        </div>
+      <div class="quick-contact wrap">
+            <a
+              class="button target-lock target-lock-secondary quick-contact-link"
+              href="https://wa.me/522741224373?text=Hola%2C%20quisiera%20saber%20los%20precios%2C%20horarios%20y%20disponibilidad%20para%20jugar%20en%20Game%20Zone%20XP."
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Consultar por WhatsApp; se abrirá en una pestaña nueva"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.5L3 20.8l1.4-4.9A8.5 8.5 0 1 1 20.5 11.8Z"/><path d="m8.2 7.2 1.3-.2 1.1 2.5-.9 1.1a7 7 0 0 0 2.9 2.9l1.1-.9 2.5 1.1-.2 1.3c-.2 1-1.3 1.5-2.3 1.2-3.5-1-6-3.5-6.9-6.9-.3-1 .3-1.9 1.4-2.1Z"/></svg>
+              <span>CONSULTAR POR WHATSAPP</span>
+            </a>
+      </div>
+        </section>
+      <section class="banner-section" aria-label="Banners de Game Zone XP">
+        <div class="wrap">
+          <div class="banner-carousel" role="region" aria-roledescription="carrusel" aria-label="Banners de Game Zone XP">
+            <div class="banner-slides" id="banner-slides" aria-live="off">
+              <img class="banner-slide is-active" src="img/banner1.jpeg" width="1600" height="625" alt="Game Zone XP: Halo, Call of Duty Black Ops II y Gears of War" decoding="async" loading="lazy" />
+              <img class="banner-slide" data-src="img/banner2.jpeg" width="1600" height="627" alt="Elige tu próximo reto: acción, fútbol y aventura" decoding="async" loading="lazy" aria-hidden="true" />
+              <img class="banner-slide" data-src="img/banner3.jpeg" width="1600" height="627" alt="El reto está en la mesa. Futbolitos: reta a tus amigos" decoding="async" loading="lazy" aria-hidden="true" />
+              <img class="banner-slide" data-src="img/banner4.jpeg" width="1600" height="626" alt="Tu próxima partida empieza aquí. Disfruta Xbox Series S" decoding="async" loading="lazy" aria-hidden="true" />
+            </div>
+            <div class="banner-controls" role="group" aria-label="Navegación de banners" hidden>
+              <div class="banner-navigation games-target-controls">
+                <button type="button" class="carousel-control banner-prev tl-button tl-arrow prev" aria-controls="banner-slides" aria-label="Banner anterior">
+                  <span class="scan" aria-hidden="true"></span>
+                  <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                  <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13" /></svg>
+                </button>
+                <button type="button" class="banner-play tl-button tl-toggle" aria-controls="banner-slides" aria-pressed="false">
+                  <span class="scan" aria-hidden="true"></span>
+                  <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                  <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                  <svg class="banner-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg>
+                  <span class="label">Pausar avance automático</span>
+                </button>
+                <button type="button" class="carousel-control banner-next tl-button tl-arrow next" aria-controls="banner-slides" aria-label="Banner siguiente">
+                  <span class="scan" aria-hidden="true"></span>
+                  <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                  <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7M17 12H4" /></svg>
+                </button>
+              </div>
+              <span class="banner-counter" aria-live="off" aria-atomic="true">1 de 4</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="experience section"
+        id="experiencia"
+        aria-labelledby="experience-title"
+      >
+        <div class="wrap">
+          <h2 id="experience-title" class="cyber-title"><span>Experiencia</span></h2>
+          <p class="section-intro">Elige tu próxima partida.</p>
+          <div class="experience-grid experience-images">
+            <article class="experience-item">
+              <img class="experience-image" src="img/Galeria1.jpeg" width="1254" height="1254" alt="Ilustración de dos pantallas con una carrera de autos y un paisaje de fantasía" loading="lazy" decoding="async" />
+            </article>
+            <article class="experience-item">
+              <img class="experience-image" src="img/Galeria2.jpeg" width="1254" height="1254" alt="Ilustración de una consola Xbox Series S blanca con su control" loading="lazy" decoding="async" />
+            </article>
+            <article class="experience-item">
+              <img class="experience-image" src="img/Galeria3.jpeg" width="1254" height="1254" alt="Ilustración de dos futbolitos con detalles verdes, amarillos y rojos" loading="lazy" decoding="async" />
+            </article>
+          </div>
+        </div>
+      </section>
+      <section
+        class="gallery section"
+        id="galeria"
+        aria-labelledby="gallery-title"
+      >
+        <div class="wrap">
+          <div class="gallery-heading">
+            <div>
+              <h2 id="gallery-title" class="cyber-title"><span>GAMES</span></h2>
+              <p class="section-intro">Videojuegos en Game Zone XP.</p>
+            </div>
+          </div>
+          <div class="games-carousel" role="region" aria-roledescription="carrusel" aria-label="Videojuegos">
+            <div class="games-filters" role="group" aria-label="Filtrar videojuegos por categoría" hidden>
+              <button type="button" class="game-filter" data-game-filter="todos" aria-controls="games-track" aria-pressed="true">Todos</button>
+              <button type="button" class="game-filter" data-game-filter="accion" aria-controls="games-track" aria-pressed="false">Acción</button>
+              <button type="button" class="game-filter" data-game-filter="deportes" aria-controls="games-track" aria-pressed="false">Deportes</button>
+              <button type="button" class="game-filter" data-game-filter="aventura" aria-controls="games-track" aria-pressed="false">Aventura</button>
+            </div>
+            <p class="visually-hidden" id="games-filter-status" role="status" aria-live="polite"></p>
+            <div class="games-controls games-target-controls" role="group" aria-label="Controles de videojuegos" hidden>
+              <button type="button" class="carousel-control tl-button tl-arrow prev" id="games-prev" aria-label="Videojuegos anteriores" aria-controls="games-track">
+                <span class="scan" aria-hidden="true"></span>
+                <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13" /></svg>
+              </button>
+              <button type="button" class="carousel-control games-play tl-button tl-toggle" id="games-play" aria-controls="games-track" aria-pressed="false">
+                <span class="scan" aria-hidden="true"></span>
+                <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                <svg class="games-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14" /></svg>
+                <span class="label">Pausar avance automático</span>
+              </button>
+              <button type="button" class="carousel-control tl-button tl-arrow next" id="games-next" aria-label="Videojuegos siguientes" aria-controls="games-track">
+                <span class="scan" aria-hidden="true"></span>
+                <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+                <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7M17 12H4" /></svg>
+              </button>
+            </div>
+            <ul class="games-track" id="games-track" aria-label="Banners de videojuegos" tabindex="0">
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Black-ops_2.jpg" srcset="img/optimized/Black-ops_2-640.jpg 640w, img/optimized/Black-ops_2.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Call of Duty: Black Ops II — Zombies" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Black-ops-mj_2.jpg" srcset="img/optimized/Black-ops-mj_2-640.jpg 640w, img/optimized/Black-ops-mj_2.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Call of Duty: Black Ops II — Multijugador" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="deportes"><img src="img/optimized/Fc-26.jpg" srcset="img/optimized/Fc-26-640.jpg 640w, img/optimized/Fc-26.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="EA Sports FC 26" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Gears-Of-War.jpg" srcset="img/optimized/Gears-Of-War-640.jpg 640w, img/optimized/Gears-Of-War.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Gears of War" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Gears-Of-War-2.jpg" srcset="img/optimized/Gears-Of-War-2-640.jpg 640w, img/optimized/Gears-Of-War-2.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Gears of War 2" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Gears-Of-War-3.jpg" srcset="img/optimized/Gears-Of-War-3-640.jpg 640w, img/optimized/Gears-Of-War-3.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Gears of War 3" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Gears-Of-War-E-Day.jpg" srcset="img/optimized/Gears-Of-War-E-Day-640.jpg 640w, img/optimized/Gears-Of-War-E-Day.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Gears of War: E-Day" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Halo-Campaign-Evolved.jpg" srcset="img/optimized/Halo-Campaign-Evolved-640.jpg 640w, img/optimized/Halo-Campaign-Evolved.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Halo: Campaign Evolved" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion aventura"><img src="img/GtaV.jpeg" srcset="img/optimized/GtaV-640.jpg 640w, img/GtaV.jpeg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Grand Theft Auto V" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+              <li class="game-card" data-categories="accion"><img src="img/optimized/Fortnite.jpg" srcset="img/optimized/Fortnite-640.jpg 640w, img/optimized/Fortnite.jpg 1024w" sizes="(min-width: 1101px) 287px, (min-width: 769px) calc((100vw - 104px) / 3), (min-width: 480px) calc((100vw - 72px) / 2), 78vw" alt="Fortnite" width="1024" height="1536" loading="lazy" decoding="async" /></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section
+        class="location section"
+        id="ubicacion"
+        aria-labelledby="location-title"
+      >
+        <div class="wrap">
+          <h2 id="location-title">Ubicación</h2>
+          <div class="location-grid">
+            <div class="address">
+              <svg aria-hidden="true"><use href="#pin" /></svg>
+              <div>
+                <h3>Colonia Tierra y Libertad</h3>
+                <p>San Miguel Soyaltepec, Oaxaca, México.</p>
+              </div>
+            </div>
+          </div>
+          <figure class="street-view" aria-labelledby="street-view-title">
+            <figcaption class="street-view-heading">
+              <h3 id="street-view-title">Explora la zona</h3>
+              <p id="street-view-description">
+                Recorre los alrededores con Google Street View.
+              </p>
+            </figcaption>
+            <div class="street-view-frame" id="street-view-panel">
+              <div class="street-view-cover">
+                <img src="img/portada-recorrido-game-zone-xp.png" width="1536" height="1024" alt="Game Zone XP: portada del recorrido virtual" decoding="async" loading="lazy" />
+              </div>
+              <iframe
+                data-src="https://www.google.com/maps/embed?pb=!4v1792466235597!6m8!1m7!1sQ53QHWfSC1T-2KHidQb9mA!2m2!1d18.24787362314326!2d-96.39620736499687!3f102.94159272135087!4f-22.828057811531693!5f0.7820865974627469" id="street-view-embed" hidden
+                width="600"
+                height="450"
+                style="border: 0"
+                title="Google Street View: alrededores de la ubicación aproximada de Game Zone XP"
+                aria-describedby="street-view-description"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+            <div class="street-view-controls">
+              <button class="button target-lock target-lock-primary" id="tour-open" type="button" aria-controls="street-view-panel" aria-expanded="false" hidden><svg class="target-lock-reticle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v6M12 17v6M1 12h6M17 12h6"/></svg><span>Explorar en 360°</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 5 7 7-7 7M17 12H4"/></svg></button>
+              <button class="button button-outline" id="tour-close" type="button" aria-controls="street-view-panel" hidden>Cerrar recorrido</button>
+              <p id="tour-status" role="status" aria-live="polite"></p>
+              <noscript>Activa JavaScript para explorar el recorrido en 360°.</noscript>
+            </div>
+          </figure>
+          <div class="location-actions">
+            <a
+              class="button target-lock target-lock-secondary"
+              href="https://www.google.com/maps?q=18.2477989%2C-96.3961956&amp;t=m&amp;z=18"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><svg aria-hidden="true"><use href="#pin" /></svg>Ver
+              ubicación<span class="visually-hidden">
+                aproximada en Google Maps (abre en una pestaña nueva)</span
+              ></a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="faq section" id="preguntas-frecuentes" aria-labelledby="faq-title">
+        <div class="wrap">
+          <h2 id="faq-title">Preguntas frecuentes</h2>
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>
+                <span>¿Dónde está Game Zone XP?</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <div class="faq-answer"><p>Estamos en Colonia Tierra y Libertad, San Miguel Soyaltepec, Oaxaca.</p></div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span>¿Qué puedo encontrar en Game Zone XP?</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <div class="faq-answer"><p>Xbox Series S, videojuegos y futbolitos.</p></div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span>¿Cómo consulto precios y horarios?</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <div class="faq-answer"><p>Escríbenos por WhatsApp y con gusto te compartimos la información.</p></div>
+            </details>
+            <details class="faq-item">
+              <summary>
+                <span>¿Cómo puedo llegar?</span>
+                <svg class="faq-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <div class="faq-answer">
+                <p>Consulta nuestra ubicación en <a href="https://www.google.com/maps?q=18.2477989%2C-96.3961956&amp;t=m&amp;z=18" target="_blank" rel="noopener noreferrer">Google Maps</a>.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <a class="brand" href="#inicio">GAME ZONE <span>XP</span></a>
+        <div class="footer-socials" role="group" aria-label="Redes sociales" aria-describedby="social-status">
+          <ul class="social-list">
+            <li><a class="social-icon" href="https://www.facebook.com/profile.php?id=61594842165007&amp;locale=es_LA" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Game Zone XP (abre en una pestaña nueva)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M13.5 22v-9h3l.5-3.5h-3.5V7.25c0-1 .3-1.75 1.75-1.75H17V2.25A21 21 0 0 0 14.5 2C12 2 10 3.5 10 6.5v3H7V13h3v9z"/></svg>
+              <span aria-hidden="true">Facebook</span>
+            </a></li>
+            <li><a class="social-icon" href="https://wa.me/522741224373?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20Game%20Zone%20XP%20y%20quisiera%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener noreferrer" aria-label="Conversar con Game Zone XP en WhatsApp (abre en una pestaña nueva)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.6 7.5L3 20.8l1.4-4.9A8.5 8.5 0 1 1 20.5 11.8Z"/><path d="m8.2 7.2 1.3-.2 1.1 2.5-.9 1.1a7 7 0 0 0 2.9 2.9l1.1-.9 2.5 1.1-.2 1.3c-.2 1-1.3 1.5-2.3 1.2-3.5-1-6-3.5-6.9-6.9-.3-1 .3-1.9 1.4-2.1Z"/></svg>
+              <span aria-hidden="true">WhatsApp</span>
+            </a></li>
+            <li><a class="social-icon" href="https://www.instagram.com/game_zonexp/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Game Zone XP (abre en una pestaña nueva)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              <span aria-hidden="true">Instagram</span>
+            </a></li>
+          </ul>
+          <span id="social-status" class="social-status">Instagram oficial de Game Zone XP</span>
+        </div>
+        <p>San Miguel Soyaltepec, Oaxaca, México.</p>
+      </div>
+    </footer>
+    <div class="mobile-location">
+      <a
+        class="button target-lock target-lock-secondary"
+        href="https://www.google.com/maps?q=18.2477989%2C-96.3961956&amp;t=m&amp;z=18"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><svg aria-hidden="true"><use href="#pin" /></svg>Ver ubicación<span
+          class="visually-hidden"
+        >
+          aproximada en Google Maps (abre en una pestaña nueva)</span
+        ></a
+      >
+    </div>
+  </body>
+</html>

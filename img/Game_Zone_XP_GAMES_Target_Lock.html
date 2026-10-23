@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Game Zone XP · GAMES · Controles TARGET / LOCK</title>
+  <style>
+    /* =============================================================
+       PROTOTIPO AUTÓNOMO · GAME ZONE XP · TARGET / LOCK
+       Referencia visual para implementar SOLO los tres controles
+       de la sección GAMES en el proyecto real.
+       No depende de imágenes ni bibliotecas externas.
+       ============================================================= */
+    :root {
+      --bg:#101214;
+      --panel:#13191a;
+      --green:#55ef83;
+      --white:#f5f7fa;
+      --muted:#aab6b6;
+      --stroke:#406953;
+      --font:"Bahnschrift", "Arial Narrow", "Segoe UI", Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      background:radial-gradient(ellipse 560px 270px at 50% -80px,#1b3c29 0%,transparent 78%),var(--bg);
+      color:var(--white);
+      font-family:var(--font);
+    }
+    .page { width:min(1050px,calc(100% - 32px)); margin:0 auto; padding:34px 0 70px; }
+    .project { display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding-bottom:18px;border-bottom:1px solid #2a3532; }
+    .brand { font-size:12px;font-weight:900;letter-spacing:.19em;color:var(--green); }
+    .tag { font-size:10px;color:#82968d;letter-spacing:.16em;text-align:right; }
+    .intro { margin:26px auto 32px;max-width:730px;text-align:center; }
+    .eyebrow { margin:0 0 10px;color:var(--green);letter-spacing:.27em;font-size:10px;font-weight:800; }
+    .intro h1 { margin:0 0 9px;font-size:clamp(24px,4.5vw,42px);letter-spacing:.02em; }
+    .intro p { margin:0; font-size:13px;color:#a6b5b0;line-height:1.7; }
+    .demo { border:1px solid #2e3936;background:linear-gradient(#131719,#101214);padding:clamp(15px,3.5vw,32px) clamp(12px,3vw,30px) 30px;position:relative;overflow:hidden; }
+    .demo::before {content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,#55ef836b,transparent);pointer-events:none;}
+    .section-title { font-size:clamp(37px,6vw,61px);font-weight:900;letter-spacing:.085em;margin:5px 0 17px;text-align:center;text-shadow:0 0 25px #55ef8313;line-height:1.1; }
+    .rule { width:min(315px,75%);height:2px;margin:0 auto 15px;background:linear-gradient(90deg,transparent,#55ef83a1,transparent); }
+    .sub { font-size:14px;color:#acb3b4;text-align:center;margin:0 0 23px; }
+
+    /* TARGET / LOCK · El grupo se mantiene centrado a cualquier ancho. */
+    .games-target-controls {
+      width:100%; display:flex;justify-content:center;align-items:stretch;
+      gap:clamp(7px,1.4vw,13px);margin:0 auto 20px; position:relative;
+    }
+    .tl-button {
+      position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      min-height:53px; padding:10px 17px; color:#dfffe7;
+      background:#0f1d19; border:1px solid var(--stroke); border-radius:0;
+      font:800 11px/1.25 var(--font);letter-spacing:.055em;text-transform:none;
+      cursor:pointer; isolation:isolate; user-select:none; -webkit-tap-highlight-color:transparent;
+      transition:background .24s ease,box-shadow .25s ease,transform .2s ease,border-color .25s ease;
+    }
+    .tl-button svg { width:18px;height:18px;flex:none;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease,filter .25s ease; }
+    .tl-button > .label, .tl-button > svg {position:relative;z-index:3;}
+    .tl-button:hover, .tl-button:focus-visible { background:#1b432e; border-color:#77fda1;box-shadow:0 0 21px #55ef8330,inset 0 0 12px #55ef830e;transform:translateY(-2px); }
+    .tl-button:active {transform:translateY(1px) scale(.96);}
+    .tl-button:focus-visible {outline:2px solid #fff;outline-offset:4px;}
+    .tl-button .corner {position:absolute;z-index:4;width:10px;height:10px;pointer-events:none;transition:width .3s cubic-bezier(.2,.85,.2,1),height .3s cubic-bezier(.2,.85,.2,1),filter .3s;}
+    .tl-button .corner.tl {top:-2px;left:-2px;border-left:2px solid var(--green);border-top:2px solid var(--green);}
+    .tl-button .corner.tr {top:-2px;right:-2px;border-right:2px solid var(--green);border-top:2px solid var(--green);}
+    .tl-button .corner.bl {bottom:-2px;left:-2px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);}
+    .tl-button .corner.br {bottom:-2px;right:-2px;border-right:2px solid var(--green);border-bottom:2px solid var(--green);}
+    .tl-button:hover .corner, .tl-button:focus-visible .corner,.tl-button.is-locked .corner {width:21px;height:21px;filter:drop-shadow(0 0 5px var(--green));}
+    /* Franja de escaneo: efecto visible al hover (o al pulsar con el dedo). */
+    .tl-button .scan {position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none;}
+    .tl-button .scan::after {content:"";position:absolute;top:-120%;left:-45%;height:320%;width:28%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,#88ffab35,#ccffdb65,#88ffab25,transparent);filter:blur(4px);opacity:0;transition:left .55s cubic-bezier(.18,.8,.2,1),opacity .15s;}
+    .tl-button:hover .scan::after,.tl-button:focus-visible .scan::after,.tl-button.is-locked .scan::after {left:140%;opacity:1;}
+    .tl-button.is-locked {border-color:#a0ffc0;box-shadow:0 0 29px #55ef8354,inset 0 0 22px #55ef831a;animation:lockPulse .54s ease-out;}
+    @keyframes lockPulse {0%{filter:brightness(1)}32%{filter:brightness(1.35)}100%{filter:brightness(1)}}
+
+    .tl-arrow {width:53px;min-width:53px;padding:0;flex:0 0 53px;}
+    .tl-arrow:hover svg,.tl-arrow:focus-visible svg {filter:drop-shadow(0 0 5px #55ef83);}
+    .tl-arrow.prev:hover svg {transform:translateX(-4px);}
+    .tl-arrow.next:hover svg {transform:translateX(4px);}
+    .tl-toggle {min-width:0;flex:0 1 auto;padding-inline:18px;background:#173021;box-shadow:inset 0 0 26px #55ef830c;}
+    .tl-toggle svg {color:var(--green);}
+    .tl-toggle .label {text-align:center;max-width:240px;}
+    .tl-toggle[aria-pressed="false"] {background:#182a21;}
+    .tl-toggle[aria-pressed="true"] svg {animation:reticlePulse 2.8s ease-in-out infinite;}
+    @keyframes reticlePulse {0%,100%{transform:scale(1)}50%{transform:scale(1.17)}}
+
+    .status {text-align:center;font-size:10px;letter-spacing:.18em;color:#92aa9c;min-height:25px;margin-bottom:17px;font-variant-numeric:tabular-nums;}
+    .status strong {color:var(--green);font-weight:800;}
+    .covers {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,2vw,19px);max-width:880px;margin:0 auto;}
+    /* Tarjetas abstractas de muestra; NO son imágenes ni contenido real del negocio. */
+    .cover {height:clamp(155px,29vw,303px);border:1px solid #365044;position:relative;overflow:hidden;display:grid;place-items:center;isolation:isolate;background:radial-gradient(circle at 50% 40%,#184e42,#0d171b 55%);}
+    .cover:nth-child(2){background:radial-gradient(circle at 70% 35%,#5c3a23,#201c1c 58%,#101214);}
+    .cover:nth-child(3){background:radial-gradient(circle at 33% 36%,#1f4e39,#10201c 55%,#101214);}
+    .cover::before {content:"";position:absolute;inset:0;background-image:linear-gradient(90deg,#55ef8311 1px,transparent 1px),linear-gradient(#55ef8311 1px,transparent 1px);background-size:28px 28px;opacity:.7;}
+    .cover::after {content:"";position:absolute;inset:8px;border:1px solid #55ef8337;pointer-events:none;}
+    .cover .watermark {font-size:clamp(17px,4vw,37px);letter-spacing:.07em;font-weight:900;opacity:.45;text-shadow:0 0 24px #55ef8349;}
+    .cover .index {position:absolute;bottom:17px;left:19px;font-size:10px;letter-spacing:.16em;color:#b5ffca;}
+    .cover.change .watermark{animation:appear .38s both;}
+    @keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:.45;transform:translateY(0)}}
+    .notice {margin:26px auto 0;max-width:790px;color:#95a9a0;font-size:12px;line-height:1.8;text-align:center;}
+    .notice b{color:#d8ffdf;}
+    .small {margin-top:8px;font-size:11px;color:#6b8177;text-align:center;}
+    @media(max-width:520px){
+      .page{width:calc(100% - 20px);padding-top:18px;}
+      .project{gap:5px;}.tag{font-size:9px;}
+      .demo{padding:24px 10px;}
+      .sub{font-size:12px;margin-bottom:20px;}
+      .games-target-controls{gap:7px;}
+      .tl-arrow{width:45px;min-width:45px;flex-basis:45px;}
+      .tl-button{min-height:49px;font-size:10px;}
+      .tl-toggle{padding:8px 8px;gap:6px;}
+      .tl-toggle svg{width:15px;height:15px;}
+      .tl-button .corner{width:8px;height:8px;}
+      .tl-button:hover .corner,.tl-button:focus-visible .corner,.tl-button.is-locked .corner{width:15px;height:15px;}
+      .cover{height:160px;}
+      .cover .index{left:8px;bottom:9px;font-size:8px;}
+      .status{font-size:9px;}
+    }
+    @media(max-width:360px){.tl-arrow{flex-basis:43px;width:43px;min-width:43px}.tl-toggle{font-size:9px;}}
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="project">
+      <div class="brand">GAME ZONE XP</div>
+      <div class="tag">INTERFAZ / TARGET · LOCK</div>
+    </header>
+    <div class="intro">
+      <p class="eyebrow">// PROTOTIPO INTERACTIVO</p>
+      <h1>CONTROLES GAMES</h1>
+      <p>Diseño TARGET / LOCK basado en la propuesta que elegiste. Prueba las flechas y el botón de pausa. Pasa el cursor o toca cada control para activar el marco táctico.</p>
+    </div>
+
+    <section class="demo" aria-label="Demostración de controles GAMES">
+      <h2 class="section-title">GAMES</h2>
+      <div class="rule" aria-hidden="true"></div>
+      <p class="sub">Videojuegos en Game Zone XP.</p>
+
+      <!-- INICIO: CONTROLES TARGET / LOCK PARA QUE CODEX LOS ESTUDIE -->
+      <div class="games-target-controls" role="group" aria-label="Controles de navegación GAMES">
+        <button class="tl-button tl-arrow prev" id="previous" type="button" aria-label="Imagen anterior">
+          <span class="scan" aria-hidden="true"></span>
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7M7 12h13"/></svg>
+        </button>
+        <button class="tl-button tl-toggle" id="toggle" type="button" aria-label="Reanudar avance automático" aria-pressed="false">
+          <span class="scan" aria-hidden="true"></span>
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" id="play-icon"><path d="M8 5v14l11-7-11-7Z"/></svg>
+          <span class="label" id="toggle-label">Reanudar avance automático</span>
+        </button>
+        <button class="tl-button tl-arrow next" id="next" type="button" aria-label="Imagen siguiente">
+          <span class="scan" aria-hidden="true"></span>
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7M17 12H4"/></svg>
+        </button>
+      </div>
+      <!-- FIN: CONTROLES TARGET / LOCK -->
+
+      <div class="status" id="status" role="status" aria-live="polite">ESTADO: <strong id="play-status">PAUSADO</strong> · VISTA <span id="page-count">01 / 10</span></div>
+      <div class="covers" aria-label="Tarjetas abstractas de demostración">
+        <div class="cover"><span class="watermark">DEMO</span><span class="index">VISTA 01</span></div>
+        <div class="cover"><span class="watermark">DEMO</span><span class="index">VISTA 02</span></div>
+        <div class="cover"><span class="watermark">DEMO</span><span class="index">VISTA 03</span></div>
+      </div>
+    </section>
+    <p class="notice"><b>IMPORTANTE:</b> Este archivo es una demostración independiente para que Codex estudie el diseño y las animaciones. Las tarjetas «DEMO» son abstractas y no reemplazan los videojuegos reales. Al integrarlo, conserva exactamente las imágenes, enlaces, estructura y comportamiento que ya tiene la web.</p>
+    <p class="small">HTML + CSS + JavaScript · Sin dependencias externas · Adaptado a móvil y tablet</p>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      const cards = Array.from(document.querySelectorAll('.cover'));
+      const count = document.getElementById('page-count');
+      const playStatus = document.getElementById('play-status');
+      const toggle = document.getElementById('toggle');
+      const label = document.getElementById('toggle-label');
+      const playIcon = document.getElementById('play-icon');
+      const prev = document.getElementById('previous');
+      const next = document.getElementById('next');
+      const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const total = 10; // Contador ficticio para simular las diez imágenes del carrusel real.
+      let current = 0;
+      let running = false; // Inicia PAUSADO, como en la captura proporcionada.
+      let timer = null;
+      const two = n => String(n).padStart(2, '0');
+
+      function render() {
+        count.textContent = `${two(current + 1)} / ${two(total)}`;
+        playStatus.textContent = running ? 'REPRODUCIENDO' : 'PAUSADO';
+        cards.forEach((card, index) => {
+          const n = (current + index) % total + 1;
+          card.querySelector('.index').textContent = `VISTA ${two(n)}`;
+          card.classList.remove('change');
+          // Forzar reentrada solo de la animación de demostración.
+          void card.offsetWidth;
+          card.classList.add('change');
+        });
+      }
+      function flash(button) {
+        button.classList.remove('is-locked');
+        void button.offsetWidth;
+        button.classList.add('is-locked');
+        window.setTimeout(() => button.classList.remove('is-locked'), 620);
+      }
+      function step(delta, button) {
+        current = (current + delta + total) % total;
+        flash(button);
+        render();
+      }
+      function syncPlay() {
+        toggle.setAttribute('aria-pressed', String(running));
+        toggle.setAttribute('aria-label', running ? 'Pausar avance automático' : 'Reanudar avance automático');
+        label.textContent = running ? 'Pausar avance automático' : 'Reanudar avance automático';
+        playIcon.innerHTML = running
+          ? '<path d="M9 5v14M15 5v14"/>'
+          : '<path d="M8 5v14l11-7-11-7Z"/>';
+        window.clearInterval(timer);
+        timer = null;
+        if (running && !media.matches) timer = window.setInterval(() => step(1, next), 5000);
+        render();
+      }
+      prev.addEventListener('click', () => step(-1, prev));
+      next.addEventListener('click', () => step(1, next));
+      toggle.addEventListener('click', () => {
+        running = !running;
+        flash(toggle);
+        syncPlay();
+      });
+      if (typeof media.addEventListener === 'function') media.addEventListener('change', syncPlay);
+      render();
+    })();
+  </script>
+</body>
+</html>

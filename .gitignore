@@ -1,0 +1,22 @@
+﻿# Herramientas locales de verificación; no forman parte de la página publicada.
+.impeccable/tools/node_modules/
+
+# Configuración y herramientas locales del asistente.
+.agents/
+.codex/
+.impeccable/
+.aws/
+node_modules/
+
+# Copias de publicación, respaldos y configuración local.
+sites/
+respaldos/
+.openai/
+.vscode/
+
+# Credenciales y variables de entorno locales.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
