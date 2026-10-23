@@ -531,6 +531,35 @@ if (gamesCarousel) {
   }
 }
 
+// Keep the mobile shortcut above Location; never overlay its content or later sections.
+(() => {
+  const floating = document.querySelector('.mobile-location');
+  const location = document.querySelector('#ubicacion');
+  if (!floating || !location) return;
+  const link = floating.querySelector('a');
+  function syncLocationShortcut() {
+    const concealed = mobile.matches && location.getBoundingClientRect().top <= window.innerHeight + 24;
+    floating.classList.toggle('is-concealed', concealed);
+    floating.inert = concealed;
+    if (concealed) {
+      floating.setAttribute('aria-hidden', 'true');
+      link.setAttribute('tabindex', '-1');
+    } else {
+      floating.removeAttribute('aria-hidden');
+      link.removeAttribute('tabindex');
+    }
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(syncLocationShortcut, {
+      rootMargin: '0px 0px 24px 0px', threshold: 0
+    }).observe(location);
+  }
+  mobile.addEventListener('change', syncLocationShortcut);
+  window.addEventListener('pageshow', syncLocationShortcut);
+  window.addEventListener('resize', syncLocationShortcut);
+  syncLocationShortcut();
+})();
+
 // Official hours use Mexico City time regardless of the visitor's timezone.
 (() => {
   const matrix = document.querySelector('#horarios');
