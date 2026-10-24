@@ -53,13 +53,27 @@ if ("IntersectionObserver" in window) {
 // Mejora progresiva: no hay estado oculto previo ni listeners de scroll.
 // El visor y sus contenedores quedan fuera de las animaciones.
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const intelMotionDialog = document.querySelector('#game-intel');
+function syncBackgroundMotion() {
+  document.documentElement.classList.toggle('is-background-motion-paused',
+    document.hidden || Boolean(intelMotionDialog?.open));
+}
+syncBackgroundMotion();
 // Las imágenes de Experiencia y GAMES solo se mueven cuando están visibles.
 const experienceImages = [...document.querySelectorAll('.experience-images .experience-item, .games-track .game-card')];
+const decorativeMotionTargets = [...document.querySelectorAll('#horarios, .games-target-controls .tl-toggle')];
 if ('IntersectionObserver' in window) {
   const visibleExperience = new Set();
-  const syncExperienceMotion = () => experienceImages.forEach(card => {
-    card.classList.toggle('is-motion-visible', visibleExperience.has(card) && !document.hidden && !reducedMotion.matches);
-  });
+  const syncExperienceMotion = () => {
+    syncBackgroundMotion();
+    const active = !document.hidden && !reducedMotion.matches;
+    experienceImages.forEach(card => {
+      card.classList.toggle('is-motion-visible', visibleExperience.has(card) && active);
+    });
+    decorativeMotionTargets.forEach(target => {
+      target.classList.toggle('is-decoration-paused', !visibleExperience.has(target) || !active);
+    });
+  };
   const experienceMotionObserver = new IntersectionObserver(entries => {
     entries.forEach(({ target, isIntersecting }) => {
       if (isIntersecting) visibleExperience.add(target);
@@ -68,8 +82,13 @@ if ('IntersectionObserver' in window) {
     syncExperienceMotion();
   }, { threshold: 0.15 });
   experienceImages.forEach(card => experienceMotionObserver.observe(card));
+  decorativeMotionTargets.forEach(target => experienceMotionObserver.observe(target));
   document.addEventListener('visibilitychange', syncExperienceMotion);
   reducedMotion.addEventListener('change', syncExperienceMotion);
+  syncExperienceMotion();
+} else {
+  // Preserve the original visible behavior when intersection observation is unavailable.
+  document.addEventListener('visibilitychange', syncBackgroundMotion);
 }
 // Mando Xbox: efectos de la referencia limitados al HUD de la columna izquierda.
 const xboxHud = document.querySelector('#xboxHud');
@@ -335,15 +354,32 @@ if (bannerCarousel) {
   const playIcon = play.querySelector('.banner-play-icon');
   bindLockControls(controls);
   let current = 0;
+  let requested = 0;
+  let requestVersion = 0;
   let paused = reducedMotion.matches;
   let hovered = false;
   let focused = false;
   let inView = !('IntersectionObserver' in window);
   let timer;
   let gesture = null;
-  const show = (index, immediate = false) => {
-    current = (index + slides.length) % slides.length;
-    loadCarouselImage(slides[current]);
+  const prepareBanner = (index) => {
+    const slide = slides[index];
+    const desktopSource = slide.parentElement.querySelector('source[data-srcset]');
+    if (desktopSource) desktopSource.srcset = desktopSource.dataset.srcset;
+    // Only the requested/next banner is fetched; hidden slides must not wait for lazy loading.
+    slide.loading = 'eager';
+    loadCarouselImage(slide);
+    return slide.decode().then(() => true, () => false);
+  };
+  const show = async (index, immediate = false) => {
+    requested = (index + slides.length) % slides.length;
+    const target = requested;
+    const version = ++requestVersion;
+    const ready = await prepareBanner(target);
+    if (version !== requestVersion) return;
+    if (!ready) { requested = current; return; }
+    // Keep the current banner visible until its replacement is decoded.
+    current = target;
     slides.forEach((slide, i) => {
       slide.style.transitionDuration = immediate ? '0ms' : '';
       slide.classList.toggle('is-active', i === current);
@@ -362,19 +398,19 @@ if (bannerCarousel) {
     play.disabled = reducedMotion.matches;
     counter.setAttribute('aria-live', running ? 'off' : 'polite');
     if (running && inView && slides.length > 1) {
-      loadCarouselImage(slides[(current + 1) % slides.length]);
+      prepareBanner((current + 1) % slides.length);
     }
     if (running && !hovered && !focused && inView && !document.hidden) {
-      timer = setTimeout(() => { show(current + 1); schedule(); }, 5000);
+      timer = setTimeout(async () => { await show(current + 1); schedule(); }, 5000);
     }
   };
   const pause = () => { paused = true; schedule(); };
   controls.hidden = false;
   bannerCarousel.querySelector('.banner-prev').addEventListener('click', event => {
-    pause(); show(current - 1, event.detail === 0);
+    pause(); show(requested - 1, event.detail === 0);
   });
   bannerCarousel.querySelector('.banner-next').addEventListener('click', event => {
-    pause(); show(current + 1, event.detail === 0);
+    pause(); show(requested + 1, event.detail === 0);
   });
   play.addEventListener('click', () => { paused = !paused; schedule(); });
   bannerCarousel.addEventListener('pointerenter', event => {
@@ -396,7 +432,7 @@ if (bannerCarousel) {
     const dx = event.clientX - gesture.x;
     const dy = event.clientY - gesture.y;
     gesture = null;
-    if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(current + (dx < 0 ? 1 : -1));
+    if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(requested + (dx < 0 ? 1 : -1));
   });
   surface.addEventListener('pointercancel', () => { gesture = null; });
   surface.addEventListener('lostpointercapture', () => { gesture = null; });
@@ -436,6 +472,151 @@ if (gamesCarousel) {
     let focused = false;
     let autoDirection = 1;
     let inView = !('IntersectionObserver' in window);
+    const intel = document.querySelector('#game-intel');
+    const intelImage = intel.querySelector('#game-intel-image');
+    const intelTitle = intel.querySelector('#game-intel-title');
+    const intelContact = intel.querySelector('#game-intel-contact');
+    const intelWebpSources = {
+      'Black-ops_2.jpg': 'img/optimized/Black-ops_2-intel.webp',
+      'Black-ops-mj_2.jpg': 'img/optimized/Black-ops-mj_2-intel.webp',
+      'Fc-26.jpg': 'img/optimized/Fc-26-intel.webp',
+      'Gears-Of-War.jpg': 'img/optimized/Gears-Of-War-intel.webp',
+      'Gears-Of-War-2.jpg': 'img/optimized/Gears-Of-War-2-intel.webp',
+      'Gears-Of-War-3.jpg': 'img/optimized/Gears-Of-War-3-intel.webp',
+      'Gears-Of-War-E-Day.jpg': 'img/optimized/Gears-Of-War-E-Day-intel.webp',
+      'Halo-Campaign-Evolved.jpg': 'img/optimized/Halo-Campaign-Evolved-intel.webp',
+      'GtaV.jpeg': 'img/optimized/GtaV-intel.webp',
+      'Fortnite.jpg': 'img/optimized/Fortnite-intel.webp'
+    };
+    let intelCardImage;
+    function selectIntelImage() {
+      if (!intelCardImage || !intel.open) return;
+      const card = intelCardImage;
+      const ratio = Number(card.getAttribute('width')) / Number(card.getAttribute('height'));
+      const maxHeight = parseFloat(getComputedStyle(intelImage).maxHeight) || Infinity;
+      const paintedWidth = Math.min(intelImage.clientWidth, maxHeight * ratio);
+      const minimumWidth = window.matchMedia('(min-width: 600px)').matches ? 800 : 640;
+      const requiredWidth = Math.min(Number(card.getAttribute('width')),
+        Math.max(minimumWidth, Math.ceil(paintedWidth * window.devicePixelRatio)));
+      const cachedSource = card.currentSrc || card.src;
+      const candidates = card.srcset.split(',').map(candidate => {
+        const [url, descriptor] = candidate.trim().split(/\s+/);
+        return { url: new URL(url, document.baseURI).href, width: parseInt(descriptor, 10) };
+      });
+      const cachedWidth = candidates.find(candidate => candidate.url === cachedSource)?.width ||
+        Number(card.getAttribute('width'));
+      // Reuse a sufficient carousel image; fetching a smaller WebP would cost extra bytes.
+      const file = new URL(card.src).pathname.split('/').pop();
+      const source = card.currentSrc && (!card.complete || card.naturalWidth) && cachedWidth >= requiredWidth
+        ? cachedSource : new URL(intelWebpSources[file] || card.src, document.baseURI).href;
+      if (intelImage.src !== source) intelImage.src = source;
+    }
+    window.addEventListener('resize', selectIntelImage);
+    const scanClip = intel.querySelector('.game-intel-scan-clip');
+    const scan = scanClip.querySelector('.game-intel-scan');
+    let scanTimer;
+    let scanGeneration = 0;
+    function clearScan() {
+      scanGeneration++;
+      clearTimeout(scanTimer);
+      scanTimer = undefined;
+      scanClip.hidden = true;
+      scan.classList.remove('is-scanning');
+    }
+    function fitScanToImage() {
+      if (!intelImage.naturalWidth || !intelImage.clientWidth || !intelImage.clientHeight) return;
+      // Match the painted object-fit:contain image, excluding its letterboxing.
+      const scale = Math.min(intelImage.clientWidth / intelImage.naturalWidth,
+        intelImage.clientHeight / intelImage.naturalHeight);
+      const width = intelImage.naturalWidth * scale;
+      const height = intelImage.naturalHeight * scale;
+      Object.assign(scanClip.style, {
+        width: `${width}px`, height: `${height}px`,
+        left: `${intelImage.offsetLeft + (intelImage.clientWidth - width) / 2}px`,
+        top: `${intelImage.offsetTop + (intelImage.clientHeight - height) / 2}px`
+      });
+    }
+    async function startScan() {
+      clearScan();
+      const generation = scanGeneration;
+      if (reducedMotion.matches) return;
+      try { await intelImage.decode(); } catch { return; }
+      if (generation !== scanGeneration || !intel.open || intel.classList.contains('is-closing') || reducedMotion.matches) return;
+      fitScanToImage();
+      scanClip.hidden = false;
+      void scan.offsetWidth;
+      scan.classList.add('is-scanning');
+      // Also clear if animationend is lost during a browser lifecycle interruption.
+      scanTimer = setTimeout(clearScan, 950);
+    }
+    scan.addEventListener('animationend', event => {
+      if (event.target === scan && event.animationName === 'intel-scan') clearScan();
+    });
+    if ('ResizeObserver' in window) new ResizeObserver(fitScanToImage).observe(intelImage);
+    else window.addEventListener('resize', fitScanToImage);
+    reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) clearScan(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) clearScan(); });
+    let intelActive = false;
+    let intelTrigger;
+    let closeTimer;
+    let gesture;
+    let previousOverflow;
+    function openIntel(button) {
+      if (intelActive) return;
+      const image = button.querySelector('img');
+      intelTitle.textContent = image.alt;
+      intelCardImage = image;
+      intelImage.alt = image.alt;
+      intelContact.href = 'https://wa.me/522741224373?text=' + encodeURIComponent(`Hola, quisiera consultar si tienen disponible ${image.alt} para jugar en Game Zone XP.`);
+      intelTrigger = button;
+      intelActive = true;
+      stop();
+      track.scrollTo({ left: track.scrollLeft, behavior: 'instant' });
+      previousOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = 'hidden';
+      intel.classList.remove('is-closing');
+      intel.showModal();
+      syncBackgroundMotion();
+      selectIntelImage();
+      startScan();
+    }
+    function closeIntel() {
+      if (!intel.open || intel.classList.contains('is-closing')) return;
+      clearScan();
+      intel.classList.add('is-closing');
+      closeTimer = setTimeout(() => intel.close(), reducedMotion.matches ? 0 : 150);
+    }
+    intel.querySelector('.game-intel-close').addEventListener('click', closeIntel);
+    intel.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const close = intel.querySelector('.game-intel-close');
+      if ((!event.shiftKey && document.activeElement === intelContact) ||
+          (event.shiftKey && document.activeElement === close)) {
+        event.preventDefault();
+        (event.shiftKey ? intelContact : close).focus();
+      }
+    });
+    intel.addEventListener('cancel', event => { event.preventDefault(); closeIntel(); });
+    intel.addEventListener('close', () => {
+      syncBackgroundMotion();
+      clearScan();
+      clearTimeout(closeTimer);
+      intelCardImage = undefined;
+      document.documentElement.style.overflow = previousOverflow;
+      intel.classList.remove('is-closing');
+      intelTrigger?.focus({ preventScroll: true });
+      intelActive = false;
+      schedule();
+    });
+    track.addEventListener('click', event => {
+      const button = event.target.closest('.game-intel-trigger');
+      if (!button) return;
+      if (event.detail !== 0 && gesture && (gesture.moved || Math.abs(track.scrollLeft - gesture.scroll) > 8)) {
+        event.preventDefault();
+        return;
+      }
+      openIntel(button);
+    });
     const syncPlayControl = () => {
       playLabel.textContent = paused ? 'Reanudar avance automático' : 'Pausar avance automático';
       play.setAttribute('aria-pressed', String(paused));
@@ -475,7 +656,7 @@ if (gamesCarousel) {
       const scrollable = canScroll();
       previous.disabled = next.disabled = !scrollable;
       play.hidden = reducedMotion.matches || !scrollable;
-      if (!paused && !hovered && !focused && inView && !document.hidden && !reducedMotion.matches && scrollable) {
+      if (!intelActive && !paused && !hovered && !focused && inView && !document.hidden && !reducedMotion.matches && scrollable) {
         timer = setTimeout(() => {
           const max = track.scrollWidth - track.clientWidth;
           if (track.scrollLeft >= max - 2) autoDirection = -1;
@@ -498,11 +679,21 @@ if (gamesCarousel) {
       syncPlayControl();
       schedule();
     });
-    track.addEventListener('pointerdown', pause, { passive: true });
+    track.addEventListener('pointerdown', event => {
+      gesture = { x: event.clientX, y: event.clientY, scroll: track.scrollLeft, moved: false };
+      if (!event.target.closest('.game-intel-trigger')) pause();
+    }, { passive: true });
+    track.addEventListener('pointermove', event => {
+      if (gesture && event.buttons && Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) {
+        gesture.moved = true;
+        pause();
+      }
+    }, { passive: true });
+    track.addEventListener('pointercancel', () => { if (gesture) gesture.moved = true; pause(); }, { passive: true });
     track.addEventListener('wheel', pause, { passive: true });
     track.addEventListener('keydown', (event) => {
-      pause();
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        pause();
         event.preventDefault();
         move(event.key === 'ArrowRight' ? 1 : -1, true);
       }

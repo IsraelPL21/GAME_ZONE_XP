@@ -25,3 +25,7 @@ Revisión visual en Edge a 360, 390, 430, 768, 820, 1024 y 1440 px. Sin desborda
 - La documentación PRODUCT.md y DESIGN.md contiene referencias antiguas a contenido pendiente; la implementación actual y las decisiones recientes son la referencia para continuar. No actualizar esa documentación como efecto secundario de otra tarea.
 
 El usuario pidió detener el trabajo y continuar mañana, 23 de octubre de 2026.
+
+## Retiro de acceso público — 23 de octubre de 2026
+Por solicitud del usuario, se retiró el acceso público en Sites. Acceso custom, únicamente propietario, sin visitantes ni grupos. No volver a publicar ni subir cambios sin nueva instrucción explícita. La eliminación completa del proyecto alojado sigue pendiente: el conector disponible no ofrece una operación para eliminar o despublicar y no hay interfaz de navegador conectada. Los archivos locales se conservan.
+
